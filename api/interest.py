@@ -8,15 +8,9 @@ class InterestSerializer(serializers.HyperlinkedModelSerializer):
         model = Interest
         fields = ('url', 'name')
 
-    # def create(self, validated_data):
-    #     #return Snippet.objects.create(**validated_data)
-    #     # call set_password on user object. Without this
-    #     # the password will be stored in plain text.
-    #     # print validated_data
-    #     post = Post(**validated_data)
-    #     print owner
-    #     post.save()
-    #     return post
+    def create(self, validated_data):
+        interest, created =  Interest.objects.get_or_create(**validated_data)
+        return interest
 
 
 # ViewSets define the view behavior.

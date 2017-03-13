@@ -35,12 +35,15 @@ class Post(models.Model):
     type        = models.IntegerField(choices=TYPE_CHOICES, default=1)
     owner       = models.ForeignKey(User)
     #path        = models.CharField(max_length=64, null=False)
-    path        = models.ImageField(upload_to='static/post/images/', max_length=254)
+    path        = models.ImageField(upload_to='post/images/', max_length=254)
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     status      = models.IntegerField(choices=STATUS_CHOICES, default=1)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-create_date',)
 
 
 class Comment(models.Model):

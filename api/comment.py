@@ -1,6 +1,9 @@
 from popilicity.models import Comment
 from rest_framework import routers, serializers, viewsets
 from api.user import UserSerializer
+from api.location import LocationSerializer
+from api.interest import InterestSerializer
+
 
 # Serializers define the API representation.
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
@@ -10,7 +13,6 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
         fields = ('url', 'post_url', 'owner', 'text')
-
 
 # ViewSets define the view behavior.
 class CommentViewSet(viewsets.ModelViewSet):
