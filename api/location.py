@@ -7,7 +7,7 @@ class LocationSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api:location-detail")
     class Meta:
         model = Location
-        fields = ('url', 'name')
+        fields = ('id', 'url', 'name')
 
     def create(self, validated_data):
         post, created =  Location.objects.get_or_create(**validated_data)
