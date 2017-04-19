@@ -55,8 +55,17 @@ class Comment(models.Model):
 
 
 class Reaction(models.Model):
-    type        = models.IntegerField(choices=REACTION_CHOICES)
+    type        = models.IntegerField(choices=REACTION_CHOICES, blank=True, null=True)
     user        = models.ForeignKey(User)
     post        = models.ForeignKey(Post)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+
+class Profile(models.Model):
+    user        = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio         = models.TextField(max_length=500, blank=True)
+    image       = models.ImageField(upload_to='user/images/', max_length=254)
+    location    = models.ForeignKey(Location, default=1)
+    interest    = models.ForeignKey(Interest, default=1)
+    birth_date  = models.DateField(null=True, blank=True)

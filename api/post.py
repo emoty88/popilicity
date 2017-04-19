@@ -17,9 +17,6 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     location = LocationSerializer()
     interest = InterestSerializer()
     comment_set = CommentSerializer(many=True, read_only=True)
-    path = serializers.ImageField(
-            max_length = None, use_url=True
-        )
 
     path = Base64ImageField(max_length=None, use_url=True,)
     my_reaction = serializers.SerializerMethodField()

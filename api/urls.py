@@ -13,6 +13,7 @@ from api.location import LocationViewSet
 from api.interest import InterestViewSet
 from api.comment import CommentViewSet
 from api.reaction import ReactionViewSet
+from api.profile import ProfileViewSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -22,6 +23,7 @@ router.register(r'locations', LocationViewSet)
 router.register(r'interests', InterestViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'reactions', ReactionViewSet)
+router.register(r'profile', ProfileViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
