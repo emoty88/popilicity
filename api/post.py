@@ -1,6 +1,7 @@
 from popilicity.models import Post, Reaction
 from rest_framework import routers, serializers, viewsets
-from api.Base64ImageField import Base64ImageField
+#from api.Base64ImageField import Base64ImageField
+from drf_extra_fields.fields import Base64ImageField
 from api.user import UserSerializer
 from api.location import LocationSerializer
 from api.interest import InterestSerializer
@@ -18,7 +19,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     interest = InterestSerializer()
     comment_set = CommentSerializer(many=True, read_only=True)
 
-    path = Base64ImageField(max_length=None, use_url=True,)
+    path = Base64ImageField()
     my_reaction = serializers.SerializerMethodField()
     class Meta:
         model = Post
