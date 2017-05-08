@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from popilicity.models import Profile
 from rest_framework import routers, serializers, viewsets
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
+from popilicity.settings import MEDIA_URL
 #from django.shortcuts import get_object_or_404
 #from rest_framework.response import Response
 
@@ -27,7 +29,11 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def get_image_path(self, obj):
-        return '/static/images/john_doe.png'
+        profile = Profile.objects.filter(user=obj).first()
+        if profile:
+            return MEDIA_URL + str(profile.image)
+        else:
+            return '/static/images/john_doe.png'
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
