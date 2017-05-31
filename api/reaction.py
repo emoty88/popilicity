@@ -1,5 +1,6 @@
 from popilicity.models import Reaction
 from rest_framework import routers, serializers, viewsets
+import autoActions
 #from api.user import UserSerializer
 #from api.post import PostSerializer
 
@@ -12,10 +13,16 @@ class ReactionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         post_id = self.initial_data['post_id']
         user = self.context['request'].user
-        (reaction, is_found) = Reaction.objects.get_or_create(user_id=user.id, post_id=int(post_id))
+        (reaction, is_not_found) = Reaction.objects.get_or_create(user_id=user.id, post_id=int(post_id))
+
+        if is_not_found:
+            oldReaction = False
+        else:
+            oldReaction = reaction.type
 
         reaction.type = validated_data['type']
         reaction.save()
+        autoActions.postReaction(post_id, reaction.type, oldReaction)
         return reaction
 
 

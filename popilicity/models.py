@@ -39,6 +39,7 @@ class Post(models.Model):
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     status      = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    point       = models.FloatField(default=0)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
@@ -69,3 +70,7 @@ class Profile(models.Model):
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     birth_date  = models.DateField(null=True, blank=True)
+    post_count  = models.IntegerField(default=0)
+    like_count  = models.IntegerField(default=0)
+    dislike_count  = models.IntegerField(default=0)
+    point       = models.FloatField(default=0)

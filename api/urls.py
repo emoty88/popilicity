@@ -23,7 +23,7 @@ router.register(r'locations', LocationViewSet)
 router.register(r'interests', InterestViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'reactions', ReactionViewSet)
-router.register(r'profile', ProfileViewSet)
+router.register(r'profiles', ProfileViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

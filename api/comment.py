@@ -1,7 +1,7 @@
 from popilicity.models import Comment
 from rest_framework import routers, serializers, viewsets
 from api.user import UserSerializer
-
+import autoActions
 
 
 # Serializers define the API representation.
@@ -19,9 +19,11 @@ class CommentSerializer(serializers.ModelSerializer):
         post_id = self.initial_data['post_id']
         comment = Comment(owner_id=self.context['request'].user.id, post_id=post_id, **validated_data)
         comment.save()
+        autoActions.newComment(post_id)
         return comment
 
 # ViewSets define the view behavior.
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    filter_fields = ('text',)

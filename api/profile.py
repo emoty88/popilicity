@@ -4,6 +4,7 @@ from api.Base64ImageField import Base64ImageField
 from api.location import LocationSerializer
 from api.interest import InterestSerializer
 from api.user import UserSerializer
+import django_filters
 
 
 
@@ -16,7 +17,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('id', 'image', 'user', 'location', 'interest')
+        fields = ('id', 'image', 'user', 'location', 'interest', 'post_count', 'like_count', 'dislike_count', 'point')
 
     def create(self, validated_data):
         location = validated_data.pop('location')
@@ -38,7 +39,20 @@ class ProfileSerializer(serializers.ModelSerializer):
         profile.save()
         return profile
 
+class ProfileFilter(django_filters.FilterSet):
+    user__name__contains = django_filters.CharFilter(name="user__first_name", lookup_expr='icontains')
+
+    class Meta:
+        model = Profile
+        fields = (
+            'user',
+            'user__first_name',
+            'user__name__contains',
+            'interest__name'
+            )
+
 # ViewSets define the view behavior.
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    filter_class = ProfileFilter
