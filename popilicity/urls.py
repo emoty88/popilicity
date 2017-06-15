@@ -20,8 +20,10 @@ from . import views
 import api
 
 
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^test/', views.test, name='test'),
 ]

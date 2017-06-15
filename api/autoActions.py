@@ -1,4 +1,6 @@
 from popilicity.models import Post, Reaction, Profile
+from django.db.models import Sum
+import datetime
 
 def postReaction(post_id, reaction, oldReaction):
     post = Post.objects.get(pk=post_id)
@@ -50,4 +52,33 @@ def newComment(post_id):
     post = Post.objects.get(pk=post_id)
     post.point = post.point + 2
     post.save()
+    return True
+
+def userPointCalculate(user_id):
+    user_point = 0
+    profile = Profile.objects.filter(user_id=user_id).first()
+    # last 30 hours
+    end_date =  datetime.datetime.now()
+    start_date = datetime.datetime.now() + datetime.timedelta(seconds=-108000)
+    post_point = Post.objects.filter(owner=profile.user).filter(create_date__range=(start_date, end_date)).aggregate(Sum('point'))
+    if post_point['point__sum'] is not None:
+        user_point += post_point['point__sum'] * 0.1
+
+
+    # between 30 hours and 180 hours
+    end_date =  datetime.datetime.now() + datetime.timedelta(seconds=-108000)
+    start_date = datetime.datetime.now() + datetime.timedelta(seconds=-648000)
+    post_point = Post.objects.filter(owner=profile.user).filter(create_date__range=(start_date, end_date)).aggregate(Sum('point'))
+    if post_point['point__sum'] is not None:
+        user_point += post_point['point__sum'] * 0.07
+
+
+    # older than 180 hours
+    start_date = datetime.datetime.now() + datetime.timedelta(seconds=-648000)
+    post_point = Post.objects.filter(owner=profile.user).filter(create_date__lt=start_date).aggregate(Sum('point'))
+    if post_point['point__sum'] is not None:
+        user_point += post_point['point__sum'] * 0.012
+
+    profile.point = user_point
+    profile.save()
     return True

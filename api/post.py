@@ -69,6 +69,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             print interestObj.errors
 
         autoActions.newPost(post)
+        autoActions.userPointCalculate(post.owner_id)
         return post
 
 
