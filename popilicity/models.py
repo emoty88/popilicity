@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_resized import ResizedImageField
 
 STATUS_CHOICES = (
     (0, 'DEACTIVE'),
@@ -34,8 +35,8 @@ class Interest(models.Model):
 class Post(models.Model):
     type        = models.IntegerField(choices=TYPE_CHOICES, default=1)
     owner       = models.ForeignKey(User)
-    #path        = models.CharField(max_length=64, null=False)
-    path        = models.ImageField(upload_to='post/images/', max_length=254)
+    #path        = models.ImageField(upload_to='post/images/',  max_length=254, null=False)
+    path        = ResizedImageField(size=[800, 800], crop=['middle', 'center'], quality=75, upload_to='post/images/')
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     status      = models.IntegerField(choices=STATUS_CHOICES, default=1)
@@ -66,7 +67,8 @@ class Reaction(models.Model):
 class Profile(models.Model):
     user        = models.OneToOneField(User, on_delete=models.CASCADE)
     bio         = models.TextField(max_length=500, blank=True)
-    image       = models.ImageField(upload_to='user/images/', max_length=254)
+    #image       = models.ImageField(upload_to='user/images/', max_length=254)
+    image       = ResizedImageField(size=[500, 500], crop=['middle', 'center'], quality=75, upload_to='post/images/')
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     birth_date  = models.DateField(null=True, blank=True)
