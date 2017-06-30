@@ -76,3 +76,13 @@ class Profile(models.Model):
     like_count  = models.IntegerField(default=0)
     dislike_count  = models.IntegerField(default=0)
     point       = models.FloatField(default=0)
+
+
+class Notification(models.Model):
+    owner       = models.ForeignKey(User, related_name='owner')
+    target_usr  = models.ForeignKey(User, related_name='target_usr')
+    target_post = models.ForeignKey(Post)
+    action      = models.IntegerField(choices=REACTION_CHOICES, blank=True, null=True)
+    is_seen     = models.BooleanField(default=False)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)

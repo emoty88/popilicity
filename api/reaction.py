@@ -22,7 +22,7 @@ class ReactionSerializer(serializers.ModelSerializer):
 
         reaction.type = validated_data['type']
         reaction.save()
-        autoActions.postReaction(post_id, reaction.type, oldReaction)
+        autoActions.postReaction(post_id, reaction.type, oldReaction, user)
         return reaction
 
 

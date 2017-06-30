@@ -1,8 +1,8 @@
-from popilicity.models import Post, Reaction, Profile
+from popilicity.models import Post, Reaction, Profile, Notification
 from django.db.models import Sum
 import datetime
 
-def postReaction(post_id, reaction, oldReaction):
+def postReaction(post_id, reaction, oldReaction, user):
     post = Post.objects.get(pk=post_id)
     point = 0
     addLike = 0
@@ -20,6 +20,7 @@ def postReaction(post_id, reaction, oldReaction):
                 addLike = -1
                 addDisLike = 1
     else:
+        addNotification(user, post.owner, post, reaction)
         if reaction == 1:
             point = 4
             addLike = 1
@@ -81,4 +82,12 @@ def userPointCalculate(user_id):
 
     profile.point = user_point
     profile.save()
+    return True
+
+def addNotification(owner, target_usr, target_post, action):
+    noti = Notification(owner_id=owner.id)
+    noti.target_usr = target_usr
+    noti.target_post = target_post
+    noti.action = action
+    noti.save()
     return True
