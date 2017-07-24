@@ -41,6 +41,9 @@ class Post(models.Model):
     interest    = models.ForeignKey(Interest, default=1)
     status      = models.IntegerField(choices=STATUS_CHOICES, default=1)
     point       = models.FloatField(default=0)
+    rate        = models.IntegerField(default=0)
+    totalRate   = models.IntegerField(default=0)
+    ratedUserCount  = models.IntegerField(default=0)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
@@ -60,6 +63,14 @@ class Reaction(models.Model):
     type        = models.IntegerField(choices=REACTION_CHOICES, blank=True, null=True)
     user        = models.ForeignKey(User)
     post        = models.ForeignKey(Post)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
+
+class Rate(models.Model):
+    rate        = models.FloatField(default=0)
+    user        = models.ForeignKey(User)
+    post        = models.ForeignKey(Post, related_name='Post')
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 

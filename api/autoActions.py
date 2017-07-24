@@ -2,6 +2,24 @@ from popilicity.models import Post, Reaction, Profile, Notification
 from django.db.models import Sum
 import datetime
 
+def postRate(post_id, rate, oldRate, user):
+    post = Post.objects.get(pk=post_id)
+
+    print(post.rate)
+    print(oldRate)
+    if oldRate is not False:
+        post.totalRate = post.totalRate - oldRate
+        print(post.rate)
+    else:
+        post.ratedUserCount += 1
+
+
+    post.totalRate = post.totalRate + rate
+    post.rate = post.totalRate / post.ratedUserCount
+    post.save()
+
+    return True
+
 def postReaction(post_id, reaction, oldReaction, user):
     post = Post.objects.get(pk=post_id)
     point = 0

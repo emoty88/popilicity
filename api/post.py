@@ -1,4 +1,4 @@
-from popilicity.models import Post, Reaction
+from popilicity.models import Post, Reaction, Rate
 from rest_framework import routers, serializers, viewsets, filters
 #from api.Base64ImageField import Base64ImageField
 from drf_extra_fields.fields import Base64ImageField
@@ -22,7 +22,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     comment_set = CommentSerializer(many=True, read_only=True)
 
     path = Base64ImageField()
-    my_reaction = serializers.SerializerMethodField()
+    is_rated = serializers.SerializerMethodField()
     class Meta:
         model = Post
         fields = (
@@ -33,10 +33,11 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             'path',
             'location',
             'interest',
-            'my_reaction',
+            'is_rated',
             'comment_set',
             'status',
             'point',
+            'rate',
             'create_date',
             'update_date',
         )
@@ -73,14 +74,14 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         return post
 
 
-    def get_my_reaction(self, obj):
-        reaction = Reaction.objects.filter(post_id= obj.id, user_id= self.context['request'].user.id)
-        if len(reaction) == 0:
-            my_reaction = 0
+    def get_is_rated(self, obj):
+        rate = Rate.objects.filter(post_id= obj.id, user_id= self.context['request'].user.id)
+        if len(rate) == 0:
+            isRated = False
         else :
-            my_reaction = reaction[0].type
+            isRated = True
 
-        return my_reaction
+        return isRated
 
 class PostFilter(django_filters.FilterSet):
     min_create_date = django_filters.DateTimeFilter(name="create_date", lookup_expr='gte')
