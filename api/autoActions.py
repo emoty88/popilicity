@@ -21,7 +21,7 @@ def postRate(post_id, rate, oldRate, user):
     post.point = post.point + point
     post.rate = post.totalRate / post.ratedUserCount
     post.save()
-
+    userPointCalculate(post.owner_id)
     return True
 
 def postReaction(post_id, reaction, oldReaction, user):
@@ -69,12 +69,14 @@ def newPost(post):
     profile = Profile.objects.filter(user=post.owner).first()
     profile.post_count = profile.post_count + 1
     profile.save()
+    userPointCalculate(Profile.user_id)
     return True
 
 def newComment(post_id):
     post = Post.objects.get(pk=post_id)
     post.point = post.point + 2
     post.save()
+    userPointCalculate(post.owner_id)
     return True
 
 def userPointCalculate(user_id):
