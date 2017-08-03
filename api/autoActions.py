@@ -4,17 +4,21 @@ import datetime
 
 def postRate(post_id, rate, oldRate, user):
     post = Post.objects.get(pk=post_id)
+    points = [0,0.5,1,2,3,4]
 
-    print(post.rate)
-    print(oldRate)
+    # print(rate)
+    # print(oldRate)
+    point = points[int(rate)]
     if oldRate is not False:
         post.totalRate = post.totalRate - oldRate
-        print(post.rate)
+        poin = point - points[int(oldRate)]
+        #print(post.rate)
     else:
         post.ratedUserCount += 1
 
 
     post.totalRate = post.totalRate + rate
+    post.point = post.point + point
     post.rate = post.totalRate / post.ratedUserCount
     post.save()
 
