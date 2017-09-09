@@ -1,5 +1,5 @@
 from popilicity.models import Profile
-from rest_framework import routers, serializers, viewsets
+from rest_framework import routers, serializers, viewsets, filters
 from api.Base64ImageField import Base64ImageField
 from api.location import LocationSerializer
 from api.interest import InterestSerializer
@@ -55,4 +55,6 @@ class ProfileFilter(django_filters.FilterSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_class = ProfileFilter
+    ordering_fields = ('point', 'id')

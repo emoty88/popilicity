@@ -1,4 +1,4 @@
-from popilicity.models import Post, Reaction, Rate
+from popilicity.models import Post, Reaction, Rate, User
 from rest_framework import routers, serializers, viewsets, filters
 #from api.Base64ImageField import Base64ImageField
 from drf_extra_fields.fields import Base64ImageField
@@ -106,3 +106,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     filter_class = PostFilter
     ordering_fields = ('point', 'id', 'create_date')
+    def get_queryset(self):
+        i_am_blocking = User.objects.filter(user_blocked__user_is_blocking=self.request.user)
+        # postIDs = Reaction.objects.filter(user_id=self.request.user.id).filter(type=1).values_list('post_id').order_by('-create_date')
+        return Post.objects.exclude(owner__in=i_am_blocking)

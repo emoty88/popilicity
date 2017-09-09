@@ -76,5 +76,4 @@ class MyLikedPostViewSet(viewsets.ModelViewSet):
     ordering_fields = ('point', 'id', 'create_date')
     def get_queryset(self):
         postIDs = Reaction.objects.filter(user_id=self.request.user.id).filter(type=1).values_list('post_id').order_by('-create_date')
-        print(postIDs)
         return Post.objects.all().filter(id__in=postIDs)

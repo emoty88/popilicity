@@ -14,6 +14,7 @@ from api.location import LocationViewSet
 from api.interest import InterestViewSet
 from api.comment import CommentViewSet
 from api.reaction import ReactionViewSet
+from api.block import BlockViewSet
 from api.profile import ProfileViewSet
 from api.notification import NotificationViewSet
 from api.rate import RateViewSet
@@ -27,6 +28,7 @@ router.register(r'locations', LocationViewSet)
 router.register(r'interests', InterestViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'reactions', ReactionViewSet)
+router.register(r'blocks', BlockViewSet)
 router.register(r'profiles', ProfileViewSet)
 router.register(r'notifications', NotificationViewSet)
 router.register(r'rates', RateViewSet)

@@ -35,8 +35,8 @@ class Interest(models.Model):
 class Post(models.Model):
     type        = models.IntegerField(choices=TYPE_CHOICES, default=1)
     owner       = models.ForeignKey(User)
-    #path        = models.ImageField(upload_to='post/images/',  max_length=254, null=False)
-    path        = ResizedImageField(size=[800, 800], crop=['middle', 'center'], quality=75, upload_to='post/images/')
+    path        = models.ImageField(upload_to='post/images/',  max_length=254, null=False)
+    #path        = ResizedImageField(size=[800, 800], crop=['middle', 'center'], quality=75, upload_to='post/images/')
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     status      = models.IntegerField(choices=STATUS_CHOICES, default=1)
@@ -95,5 +95,12 @@ class Notification(models.Model):
     target_post = models.ForeignKey(Post)
     action      = models.IntegerField(choices=REACTION_CHOICES, blank=True, null=True)
     is_seen     = models.BooleanField(default=False)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
+
+class Block(models.Model):
+    user_is_blocking = models.ForeignKey(User, related_name="user_blocking")
+    user_is_blocked = models.ForeignKey(User, related_name="user_blocked")
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
