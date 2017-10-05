@@ -35,9 +35,30 @@ class ProfileSerializer(serializers.ModelSerializer):
             print interestObj.errors
 
         profile = Profile(user=self.context['request'].user, location=locationIns, interest=interstIns, **validated_data)
-        print profile
+        # print profile
         profile.save()
         return profile
+
+    def update(self,instance, validated_data):
+        location = validated_data.pop('location')
+        locationObj = LocationSerializer(data=location)
+        if locationObj.is_valid():
+            locationIns = locationObj.save()
+        else:
+            print locationObj.errors
+        instance.location = locationIns
+
+        interest = validated_data.pop('interest')
+        interestObj = InterestSerializer(data=interest)
+        if interestObj.is_valid():
+            interstIns = interestObj.save()
+        else:
+            print interestObj.errors
+        instance.interest = interstIns
+        if 'image' in validated_data:
+            instance.image = validated_data['image']
+        instance.save()
+        return instance
 
 class ProfileFilter(django_filters.FilterSet):
     user__name__contains = django_filters.CharFilter(name="user__first_name", lookup_expr='icontains')
