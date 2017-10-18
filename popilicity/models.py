@@ -17,6 +17,13 @@ REACTION_CHOICES = (
     (1, 'LIKE'),
 )
 
+NOTIFICATION_ACTIONS = (
+    (-1, 'DISLIKE'),
+    (1, 'LIKE'),
+    (2, 'COMMENT'),
+    (5, 'RATE'),
+)
+
 
 class Location(models.Model):
     name        = models.CharField(max_length=64, null=False)
@@ -93,7 +100,7 @@ class Notification(models.Model):
     owner       = models.ForeignKey(User, related_name='owner')
     target_usr  = models.ForeignKey(User, related_name='target_usr')
     target_post = models.ForeignKey(Post)
-    action      = models.IntegerField(choices=REACTION_CHOICES, blank=True, null=True)
+    action      = models.IntegerField(choices=NOTIFICATION_ACTIONS, blank=True, null=True)
     is_seen     = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)

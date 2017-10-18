@@ -21,6 +21,8 @@ def postRate(post_id, rate, oldRate, user):
     post.point = post.point + point
     post.rate = post.totalRate / post.ratedUserCount
     post.save()
+
+    addNotification(user, post.owner, post, 5)
     # userPointCalculate(post.owner_id)
     return True
 
@@ -72,11 +74,12 @@ def newPost(post):
     # userPointCalculate(Profile.user_id)
     return True
 
-def newComment(post_id):
+def newComment(post_id, user):
     post = Post.objects.get(pk=post_id)
     post.point = post.point + 2
     post.save()
     # userPointCalculate(post.owner_id)
+    addNotification(user, post.owner, post, 2)
     return True
 
 def userPointCalculate(user_id):
