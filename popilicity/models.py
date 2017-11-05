@@ -111,3 +111,9 @@ class Block(models.Model):
     user_is_blocked = models.ForeignKey(User, related_name="user_blocked")
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+
+class ReportedPost(models.Model):
+    user_is_reporting = models.ForeignKey(User, related_name='user_reporting')
+    post_is_reported = models.ForeignKey(Post, related_name='post_reported')
+    reason           = models.TextField(max_length=500, blank=True)
