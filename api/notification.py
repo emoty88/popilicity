@@ -38,5 +38,8 @@ class NotificationViewSet(viewsets.ModelViewSet):
     serializer_class = NotificationSerializer
 
     def get_queryset(self):
-        print (self.request.user.id)
-        return Notification.objects.all().filter(target_usr_id=self.request.user.id).order_by('-create_date')
+        print(self.request.GET)
+        if('count' not in self.request.GET):
+            Notification.objects.all().filter(target_usr_id=self.request.user.id).filter(is_seen=0).update(is_seen=1)
+        notifications = Notification.objects.all().filter(target_usr_id=self.request.user.id).order_by('-create_date')
+        return notifications

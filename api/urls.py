@@ -18,6 +18,7 @@ from api.block import BlockViewSet
 from api.reportedpost import ReportedPostViewSet
 from api.profile import ProfileViewSet
 from api.notification import NotificationViewSet
+from api.notificationCount import NotificationCount
 from api.rate import RateViewSet
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -33,10 +34,12 @@ router.register(r'blocks', BlockViewSet)
 router.register(r'report', ReportedPostViewSet)
 router.register(r'profiles', ProfileViewSet)
 router.register(r'notifications', NotificationViewSet)
+# router.register(r'notificationCount', NotificationCount.as_view())
 router.register(r'rates', RateViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^notificationCount/$', NotificationCount.as_view()),
     url(r'^token-auth/', obtain_jwt_token),
     url(r'^token-refresh/', refresh_jwt_token),
     url(r'^token-verify/', verify_jwt_token),
