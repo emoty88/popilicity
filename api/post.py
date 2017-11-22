@@ -23,6 +23,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 
     path = Base64ImageField()
     is_rated = serializers.SerializerMethodField()
+    rate = serializers.SerializerMethodField()
     class Meta:
         model = Post
         fields = (
@@ -72,6 +73,14 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         autoActions.newPost(post)
         autoActions.userPointCalculate(post.owner_id)
         return post
+
+
+    def get_rate(self, obj):
+        rate = Rate.objects.filter(post_id= obj.id, user_id= self.context['request'].user.id).first()
+        if rate:
+            return rate.rate
+        else:
+            return 0
 
 
     def get_is_rated(self, obj):
