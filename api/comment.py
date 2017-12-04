@@ -12,7 +12,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'url', 'post_url', 'owner', 'text')
+        fields = ('id', 'url', 'post_url', 'owner', 'text', 'create_date')
         write_only_fields = ('post_id',)
 
     def create(self, validated_data):
