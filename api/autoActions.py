@@ -23,7 +23,7 @@ def postRate(post_id, rate, oldRate, user):
     post.save()
 
     addNotification(user, post.owner, post, 5)
-    # userPointCalculate(post.owner_id)
+    userPointCalculate(post.owner_id)
     return True
 
 def postReaction(post_id, reaction, oldReaction, user):
@@ -78,11 +78,12 @@ def newComment(post_id, user):
     post = Post.objects.get(pk=post_id)
     post.point = post.point + 2
     post.save()
-    # userPointCalculate(post.owner_id)
+    userPointCalculate(post.owner_id)
     addNotification(user, post.owner, post, 2)
     return True
 
 def userPointCalculate(user_id):
+    print('user point Calculate')
     user_point = 0
     profile = Profile.objects.filter(user_id=user_id).first()
     # last 30 hours
