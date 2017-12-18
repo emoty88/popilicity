@@ -9,7 +9,8 @@ STATUS_CHOICES = (
 
 TYPE_CHOICES = (
     (1, 'IMAGE'),
-    (2, 'VIDEO'),
+    (2, 'TEXT'),
+    (3, 'VIDEO'),
 )
 
 REACTION_CHOICES = (
@@ -39,14 +40,21 @@ class Interest(models.Model):
         return self.name
 
 
+class TextPostBackground(models.Model):
+    name = models.CharField(max_length=64, null=False)
+    path = models.TextField(max_length = 254)
+
+
 class Post(models.Model):
     type        = models.IntegerField(choices=TYPE_CHOICES, default=1)
     owner       = models.ForeignKey(User)
-    path        = models.ImageField(upload_to='post/images/',  max_length=254, null=False)
-    #path        = ResizedImageField(size=[800, 800], crop=['middle', 'center'], quality=75, upload_to='post/images/')
+    # path        = models.ImageField(upload_to='post/images/',  max_length=254, null=True)
+    path        = ResizedImageField(size=[800, 800], crop=['middle', 'center'], quality=75, upload_to='post/images/', null=True)
     location    = models.ForeignKey(Location, default=1)
     interest    = models.ForeignKey(Interest, default=1)
     status      = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    text        = models.CharField(max_length=255, default='')
+    background  = models.ForeignKey(TextPostBackground, default=1)
     point       = models.FloatField(default=0)
     rate        = models.IntegerField(default=0)
     totalRate   = models.IntegerField(default=0)

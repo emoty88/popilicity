@@ -1,4 +1,4 @@
-from popilicity.models import Post, Reaction, Rate, User
+from popilicity.models import Post, Reaction, Rate, User, TextPostBackground
 from rest_framework import routers, serializers, viewsets, filters
 #from api.Base64ImageField import Base64ImageField
 from drf_extra_fields.fields import Base64ImageField
@@ -6,6 +6,7 @@ from api.user import UserSerializer
 from api.location import LocationSerializer
 from api.interest import InterestSerializer
 from api.comment import CommentSerializer
+from api.textpostbackground import TextPostBackgroundSerializer
 #import django_filters.rest_framework
 from rest_framework import generics
 from api.customPagination import CustomPageNumberPagination
@@ -19,6 +20,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     owner = UserSerializer(read_only=True)
     location = LocationSerializer()
     interest = InterestSerializer()
+    background = TextPostBackgroundSerializer()
     comment_set = CommentSerializer(many=True, read_only=True)
 
     path = Base64ImageField()
@@ -36,6 +38,8 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             'interest',
             'is_rated',
             'comment_set',
+            'text',
+            'background',
             'status',
             'point',
             'rate',
@@ -59,7 +63,15 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         else:
             print interestObj.errors
 
-        post = Post(owner_id=self.context['request'].user.id, location=locationIns, interest=interstIns,  **validated_data)
+        background = validated_data.pop('background')
+        backgroundObj = TextPostBackgroundSerializer(data=background)
+        if backgroundObj.is_valid():
+            backgroundIns = backgroundObj.save()
+        else:
+            print backgroundIns.errors
+
+
+        post = Post(owner_id=self.context['request'].user.id, location=locationIns, interest=interstIns, background=backgroundIns, **validated_data)
         post.save()
 
         first_comment = self.initial_data['comment']
