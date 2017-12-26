@@ -57,6 +57,14 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             print locationObj.errors
 
         interest = validated_data.pop('interest')
+        print(interest)
+        if (interest['name'][0] == '#'):
+            splitted = interest['name'][1:].split("#")
+        else:
+            splitted = interest['name'].split("#")
+        print (splitted)
+        interest['name'] = splitted[0].strip()
+        print(interest)
         interestObj = InterestSerializer(data=interest)
         if interestObj.is_valid():
             interstIns = interestObj.save()
